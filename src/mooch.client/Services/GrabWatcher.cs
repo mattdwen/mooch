@@ -4,17 +4,17 @@ using System.Threading.Tasks;
 
 namespace mooch.client.Services
 {
-  public class ThumbnailWatcher
+  public class GrabWatcher
   {
     #region Constructor
 
-    public ThumbnailWatcher()
+    public GrabWatcher()
     {
-      var path = ConfigurationManager.AppSettings["security.thumbs.path"];
+      var path = ConfigurationManager.AppSettings["security.grabs.path"];
 
       var watcher = new FileSystemWatcher(path)
       {
-        Filter = "*_large.jpg"
+        Filter = "*.jpg"
       };
       watcher.Created += _watcher_Created;
       watcher.EnableRaisingEvents = true;
@@ -38,11 +38,11 @@ namespace mooch.client.Services
 
     private void _watcher_Created(object sender, FileSystemEventArgs e)
     {
-      LogMessage?.Invoke("Motion detected");
+      LogMessage?.Invoke("Snapshot grabbed");
       Task.Run(() =>
       {
         System.Threading.Thread.Sleep(500);
-        Slack.Instance.PostImage("security", File.ReadAllBytes(e.FullPath), e.Name.Replace("_large", ""));
+        Slack.Instance.PostImage("security", File.ReadAllBytes(e.FullPath), e.Name);
       });
     }
 

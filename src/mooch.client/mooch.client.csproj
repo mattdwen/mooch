@@ -54,6 +54,8 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\GrabWatcher.cs" />
+    <Compile Include="Services\ISpy.cs" />
     <Compile Include="Services\Slack.cs" />
     <Compile Include="Services\ThumbnailWatcher.cs" />
   </ItemGroup>
