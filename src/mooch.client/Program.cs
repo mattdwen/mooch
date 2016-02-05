@@ -13,6 +13,9 @@ namespace mooch.client
       Console.WriteLine("********************");
       Console.WriteLine("Mooch Client running");
       Console.WriteLine("********************");
+
+      //Slack.PostMessage("general", "Hello!");
+
       Console.ReadKey();
     }
 

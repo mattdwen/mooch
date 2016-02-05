@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace mooch.client.Services
 {
@@ -38,6 +39,11 @@ namespace mooch.client.Services
     private void _watcher_Created(object sender, FileSystemEventArgs e)
     {
       LogMessage?.Invoke("Motion detected");
+      Task.Run(() =>
+      {
+        System.Threading.Thread.Sleep(500);
+        Slack.PostImage("security", File.ReadAllBytes(e.FullPath), e.Name.Replace("_large", ""));
+      });
     }
 
     #endregion Event Handlers
