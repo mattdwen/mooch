@@ -1,24 +1,29 @@
 ﻿using System;
 using mooch.client.Services;
+using NLog;
 
 namespace mooch.client
 {
   internal class Program
   {
+    private static Logger logger;
+
     private static void Main(string[] args)
     {
+      logger = LogManager.GetCurrentClassLogger();
+
+      LogMessage("********************");
+      LogMessage("Mooch Client running");
+      LogMessage("********************");
+
       var slack = Slack.Instance;
       slack.SlackMessageRecieved += Slack_SlackMessageRecieved;
 
       var grabWatcher = new GrabWatcher();
-      grabWatcher.LogMessage += ThumbnailWatcher_LogMessage;
+      grabWatcher.LogMessage += LogMessage;
 
       var thumbnailWatcher = new ThumbnailWatcher();
-      thumbnailWatcher.LogMessage += ThumbnailWatcher_LogMessage;
-
-      Console.WriteLine("********************");
-      Console.WriteLine("Mooch Client running");
-      Console.WriteLine("********************");
+      thumbnailWatcher.LogMessage += LogMessage;
 
       Console.ReadKey();
     }
@@ -43,9 +48,9 @@ namespace mooch.client
       }
     }
 
-    private static void ThumbnailWatcher_LogMessage(string message)
+    private static void LogMessage(string message)
     {
-      Console.WriteLine($"{DateTime.Now} {message}");
+      logger.Log(LogLevel.Info, message);
     }
   }
 }

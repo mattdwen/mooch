@@ -2,6 +2,7 @@
 using System.Linq;
 using SlackAPI;
 using SlackAPI.WebSocketMessages;
+using NLog;
 
 namespace mooch.client.Services
 {
@@ -14,7 +15,10 @@ namespace mooch.client.Services
       var token = ConfigurationManager.AppSettings["slack.auth.token"];
       _client = new SlackSocketClient(token);
       _client.OnMessageReceived += _client_OnMessageReceived;
-      _client.Connect(response => { _botId = _client.Users.FirstOrDefault(x => x.name == "mooch")?.id; });
+      _client.Connect(response => {
+        LogManager.GetCurrentClassLogger().Info("Connected to Slack");
+        _botId = _client.Users.FirstOrDefault(x => x.name == "mooch")?.id;
+      });
     }
 
     #endregion Constructor
