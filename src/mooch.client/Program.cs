@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using mooch.client.Services;
 using NLog;
 
@@ -6,12 +7,8 @@ namespace mooch.client
 {
   internal class Program
   {
-    private static Logger logger;
-
     private static void Main(string[] args)
     {
-      logger = LogManager.GetCurrentClassLogger();
-
       LogMessage("********************");
       LogMessage("Mooch Client running");
       LogMessage("********************");
@@ -19,11 +16,12 @@ namespace mooch.client
       var slack = Slack.Instance;
       slack.SlackMessageRecieved += Slack_SlackMessageRecieved;
 
-      var grabWatcher = new GrabWatcher();
-      grabWatcher.LogMessage += LogMessage;
 
-      var thumbnailWatcher = new ThumbnailWatcher();
-      thumbnailWatcher.LogMessage += LogMessage;
+      var grabWatcher = new ImageWatcher(ConfigurationManager.AppSettings["security.grabs.path"], "*.jpg");
+      grabWatcher.ImageCaptured += () => { LogManager.GetCurrentClassLogger().Info("Snapshot grabbed"); };
+
+      var thumbnailWatcher = new ImageWatcher(ConfigurationManager.AppSettings["security.thumbs.path"], "_large.jpg");
+      thumbnailWatcher.ImageCaptured += () => { LogManager.GetCurrentClassLogger().Info("Motion detected"); };
 
       Console.ReadKey();
     }
@@ -50,7 +48,7 @@ namespace mooch.client
 
     private static void LogMessage(string message)
     {
-      logger.Log(LogLevel.Info, message);
+      LogManager.GetCurrentClassLogger().Info(message);
     }
   }
 }
