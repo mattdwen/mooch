@@ -13,8 +13,14 @@ namespace mooch.client.Services
     public Slack()
     {
       var token = ConfigurationManager.AppSettings["slack.auth.token"];
+
+      _connectionTimer = new System.Timers.Timer(1000 * 60); // 1 minute
+      _connectionTimer.Elapsed += _connectionTimer_Elapsed;
+      _connectionTimer.Start();
+
       _client = new SlackSocketClient(token);
       _client.OnMessageReceived += _client_OnMessageReceived;
+
       _client.Connect(response => {
         LogManager.GetCurrentClassLogger().Info("Connected to Slack");
         _botId = _client.Users.FirstOrDefault(x => x.name == "mooch")?.id;
@@ -27,6 +33,7 @@ namespace mooch.client.Services
 
     private readonly string _botName = "mooch";
     private readonly SlackSocketClient _client;
+    private readonly System.Timers.Timer _connectionTimer;
 
     private string _botId = "";
 
@@ -90,6 +97,17 @@ namespace mooch.client.Services
       obj.text = obj.text.Replace(name, "").Trim();
 
       SlackMessageRecieved?.Invoke(obj);
+    }
+
+    private void _connectionTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+    {
+      if (!_client.IsConnected)
+      {
+        _client.Connect((response) =>
+        {
+          LogManager.GetCurrentClassLogger().Info("Reconnected to Slack");
+        });
+      }
     }
 
     #endregion Event Handlers
