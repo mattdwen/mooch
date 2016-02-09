@@ -20,7 +20,7 @@ namespace mooch.client
       var grabWatcher = new ImageWatcher(ConfigurationManager.AppSettings["security.grabs.path"], "*.jpg");
       grabWatcher.ImageCaptured += () => { LogManager.GetCurrentClassLogger().Info("Snapshot grabbed"); };
 
-      var thumbnailWatcher = new ImageWatcher(ConfigurationManager.AppSettings["security.thumbs.path"], "_large.jpg");
+      var thumbnailWatcher = new ImageWatcher(ConfigurationManager.AppSettings["security.thumbs.path"], "*_large.jpg");
       thumbnailWatcher.ImageCaptured += () => { LogManager.GetCurrentClassLogger().Info("Motion detected"); };
 
       Console.ReadKey();

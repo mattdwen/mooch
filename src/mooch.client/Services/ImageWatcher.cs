@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using NLog;
 
@@ -62,7 +58,7 @@ namespace mooch.client.Services
         }
         catch
         {
-          System.Threading.Thread.Sleep(5000);
+          Thread.Sleep(5000);
         }
       }
     }
@@ -75,7 +71,7 @@ namespace mooch.client.Services
     {
       Task.Run(() =>
       {
-        System.Threading.Thread.Sleep(500);
+        Thread.Sleep(500);
         ImageCaptured?.Invoke();
         Slack.Instance.PostImage("security", File.ReadAllBytes(e.FullPath), e.Name);
       });
