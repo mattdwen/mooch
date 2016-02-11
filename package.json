@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Hacky home automation",
   "private": true,
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/mattdwen/mooch/issues"
   },
-  "homepage": "https://github.com/mattdwen/mooch#README.md"
+  "homepage": "https://github.com/mattdwen/mooch#README.md",
+  "dependencies": {
+    "botkit": "0.0.5"
+  }
 }
