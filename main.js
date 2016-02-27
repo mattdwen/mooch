@@ -65,7 +65,7 @@ Config.on('saved', () => {
 // -----------------------------------------------------------------------------
 
 function connectMoochBot() {
-	MoochBot = new moochBot.MoochBot(Config.options.slack.token);
+	MoochBot = new moochBot.MoochBot(Config.options.slack.token, app.getPath('userData'));
 
 	MoochBot.on('connecting', (message) => {
 		mainWindow.webContents.send('slack:connecting');

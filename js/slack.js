@@ -13,7 +13,8 @@ $(function() {
 	});
 
 	ipcRenderer.on('slack:received', (sender, message) => {
-		showMessage(message.text, 'muted');
+		console.log(message);
+		showMessage(message, 'muted');
 	});
 
 	function showMessage(message, style) {
