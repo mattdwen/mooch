@@ -7,13 +7,36 @@
 	<title>mooch</title>
 
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
+	<link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css"/>
 </head>
 <body>
-	<h1>mooch</h1>
+	<nav class="navbar navbar-full navbar-dark bg-inverse">
+		<span class="navbar-brand">mooch</span>
+	</nav>
+
+	<br/>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-block">
+						<h1 class="card-title">Slack</h1>
+						<button class="btn btn-success" id="slackConnect" type="button">Connect</button>
+						<button class="btn btn-success hidden-xs-up" id="slackConnecting" type="button" disabled><i class="fa fa-spinner fa-spin"></i> Connecting</button>
+						<button class="btn btn-danger hidden-xs-up" id="slackDisconnect" type="button">Disconnect</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<script>
 		window.$ = window.jQuery = require('./bower_components/jquery/dist/jquery.js');
 	</script>
 	<script src="bower_components/tether/dist/js/tether.js"></script>
 	<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/slack.js"></script>
 </body>
 </html>

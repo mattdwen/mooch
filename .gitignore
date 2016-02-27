@@ -2,4 +2,6 @@
 bower_components/
 conf/tokens/
 data/
+lib/
 node_modules/
+typings/

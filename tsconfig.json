@@ -1,0 +1,20 @@
+{
+	"version": "1.8.2",
+	"compileOnSave": true,
+	"compilerOptions": {
+		"rootDir": "src",
+		"outDir": "lib",
+		"sourceMap": true,
+		"target": "es5",
+		"module": "commonjs"
+	},
+	"filesGlob": [
+		"./src/**/*.ts"
+	],
+	"exlude": [
+		"node_modules"
+	],
+	"atom": {
+		"rewriteTsconfig": false
+	}
+}
