@@ -17,7 +17,7 @@ $(function() {
 
 	ipcRenderer.on('slack:error', (sender, error) => {
 		console.log(error);
-		showMessage(error, 'danger');
+		showMessage(error.code, 'danger');
 	});
 
 	ipcRenderer.on('slack:received', (sender, message) => {

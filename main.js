@@ -34,7 +34,7 @@ app.on('window-all-closed', function() {
 });
 
 ipcMain.on('slack:connect', () => {
-		MoochBot.connect();
+		MoochBot.reconnect();
 });
 
 MoochBot.on('connected', (message) => {

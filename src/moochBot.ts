@@ -11,6 +11,7 @@ export class MoochBot extends events.EventEmitter {
 	config: any;
 	controller: any;
 	bot: any;
+	connected: boolean = false;
 
 	constructor(config: any) {
 		super();
@@ -28,17 +29,28 @@ export class MoochBot extends events.EventEmitter {
 		});
 	}
 
+	reconnect() {
+		if (this.connected) return;
+		this.connect();
+		setTimeout(() => {
+			this.reconnect();
+		}, 30 * 1000);
+	}
+
 	private setupController() {
 		this.controller = Botkit.slackbot({
 			json_file_store: './data'
 		});
 
 		this.controller.on('rtm_open', (bot) => {
+			this.connected = true;
 			this.emit('connected');
 		});
 
 		this.controller.on('rtm_close', (bot) => {
+			this.connected = false;
 			this.emit('disconnected');
+			this.reconnect();
 		});
 
 		this.controller.hears('hello', toMe, (bot, message) => {
