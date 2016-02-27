@@ -40,3 +40,7 @@ ipcMain.on('slack:connect', () => {
 MoochBot.on('connected', (message) => {
 	mainWindow.webContents.send('slack:connected');
 });
+
+MoochBot.on('disconnected', (message) => {
+	mainWindow.webContents.send('slack:disconnected');
+});

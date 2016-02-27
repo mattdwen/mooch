@@ -9,4 +9,9 @@ $(function() {
 		$('#slackConnecting').addClass('hidden-xs-up');
 		$('#slackDisconnect').removeClass('hidden-xs-up');
 	});
+
+	ipcRenderer.on('slack:disconnected', () => {
+		$('#slackDisconnect').addClass('hidden-xs-up');
+		$('#slackConnect').removeClass('hidden-xs-up');
+	});
 });

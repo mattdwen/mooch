@@ -34,6 +34,10 @@ export class MoochBot extends events.EventEmitter {
 		this.controller.on('rtm_open', (bot) => {
 			this.emit('connected');
 		});
+
+		this.controller.on('rtm_close', (bot) => {
+			this.emit('disconnected');
+		});
 	}
 
 	private setupBot() {
