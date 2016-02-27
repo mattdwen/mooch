@@ -1,4 +1,5 @@
 *.secret.js
+bower_components/
 conf/tokens/
 data/
 node_modules/

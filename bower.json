@@ -1,0 +1,23 @@
+{
+  "name": "mooch",
+  "description": "Hacky home automation",
+  "main": "main.js",
+  "authors": [
+    "Matt Dwen <matt@dwen.co.nz>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/mattdwen/mooch",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "4.0",
+    "tether": "^1.2.0"
+  }
+}
