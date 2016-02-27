@@ -22,6 +22,35 @@
 			<div class="col-md-6">
 				<div class="card">
 					<div class="card-block">
+						<h1 class="card-title">Options</h1>
+
+						<form id="optionsForm">
+							<h3>Slack</h3>
+							<div class="form-group">
+								<label for="optionsSlackToken">Token</label>
+								<input type="text" class="form-control" id="optionsSlackToken" placeholder="token" required/>
+							</div>
+
+							<h3>Google Calendar</h3>
+							<div class="form-group">
+								<label for="optionsGoogleCalendarClientId">Client id</label>
+								<input type="text" class="form-control" id="optionsGoogleCalendarClientId" placeholder="client id" required/>
+							</div>
+							<div class="form-group">
+								<label for="optionsGoogleCalendarClientSecret">Client secret</label>
+								<input type="text" class="form-control" id="optionsGoogleCalendarClientSecret" placeholder="client secret" required/>
+							</div>
+
+
+							<button class="btn btn-primary" type="submit">Save</button>
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-block">
 						<div class="pull-xs-right">
 							<button class="btn btn-success" id="slackConnect" type="button">Connect</button>
 							<button class="btn btn-success hidden-xs-up" id="slackConnecting" type="button" disabled><i class="fa fa-spinner fa-spin"></i> Connecting</button>
@@ -35,22 +64,6 @@
 				</div>
 			</div>
 
-			<div class="col-md-6">
-				<div class="card">
-					<div class="card-block">
-						<h1 class="card-title">Options</h1>
-
-						<form id="optionsForm">
-							<div class="form-group">
-								<label for="optionsSlackToken">Slack token</label>
-								<input type="text" class="form-control" id="optionsSlackToken" required/>
-							</div>
-
-							<button class="btn btn-primary" type="submit">Save</button>
-						</form>
-					</div>
-				</div>
-			</div>
 		</div>
 	</div>
 

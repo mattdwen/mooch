@@ -1,17 +1,28 @@
 ///<reference path="../typings/node/node.d.ts" />
 
+//declare var extend:any;
+
 import events = require('events');
 import fs = require('fs');
 import path = require('path');
+import extend = require('xtend');
 
 export class Config extends events.EventEmitter {
 	app:any;
 	configPath:string;
-	options = {
+	defaultOptions = {
+		google: {
+			calendar: {
+				clientId: '',
+				clientSecret: ''
+			}
+		},
 		slack: {
 			token: ''
 		}
 	};
+
+	options = this.defaultOptions;
 
 	constructor(app: any) {
 		super();
@@ -23,7 +34,8 @@ export class Config extends events.EventEmitter {
 
 	load() {
 		if (fs.existsSync(this.configPath)) {
-			this.options = JSON.parse(fs.readFileSync(this.configPath, 'utf8'));
+			var options = JSON.parse(fs.readFileSync(this.configPath, 'utf8'));
+			this.options = extend(this.defaultOptions, options);
 		}
 	}
 

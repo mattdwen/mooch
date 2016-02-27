@@ -3,6 +3,12 @@ $(function() {
 		e.preventDefault();
 
 		var options = {
+			google: {
+				calendar: {
+					clientId: $('#optionsGoogleCalendarClientId').val(),
+					clientSecret: $('#optionsGoogleCalendarClientSecret').val()
+				}
+			},
 			slack: {
 				token: $('#optionsSlackToken').val()
 			}
@@ -13,6 +19,8 @@ $(function() {
 
 	ipcRenderer.on('options:loaded', (sender, options) => {
 		$('#optionsSlackToken').val(options.slack.token);
+		$('#optionsGoogleCalendarClientId').val(options.google.calendar.clientId);
+		$('#optionsGoogleCalendarClientSecret').val(options.google.calendar.clientSecret);
 	});
 
 	ipcRenderer.on('options:saved', () => {
