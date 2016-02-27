@@ -21,10 +21,15 @@
 			<div class="col-md-6">
 				<div class="card">
 					<div class="card-block">
+						<div class="pull-xs-right">
+							<button class="btn btn-success" id="slackConnect" type="button">Connect</button>
+							<button class="btn btn-success hidden-xs-up" id="slackConnecting" type="button" disabled><i class="fa fa-spinner fa-spin"></i> Connecting</button>
+							<button class="btn btn-danger hidden-xs-up" id="slackDisconnect" type="button">Disconnect</button>
+						</div>
+
 						<h1 class="card-title">Slack</h1>
-						<button class="btn btn-success" id="slackConnect" type="button">Connect</button>
-						<button class="btn btn-success hidden-xs-up" id="slackConnecting" type="button" disabled><i class="fa fa-spinner fa-spin"></i> Connecting</button>
-						<button class="btn btn-danger hidden-xs-up" id="slackDisconnect" type="button">Disconnect</button>
+
+						<p id="slackMessage"></p>
 					</div>
 				</div>
 			</div>

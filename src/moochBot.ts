@@ -5,6 +5,8 @@ declare var Botkit: any;
 import events = require('events');
 import Botkit = require('botkit');
 
+const toMe = ['direct_message', 'direct_mention', 'mention'];
+
 export class MoochBot extends events.EventEmitter {
 	config: any;
 	controller: any;
@@ -19,9 +21,9 @@ export class MoochBot extends events.EventEmitter {
 	}
 
 	connect() {
-		this.bot.startRTM((err, bot, payload) => {
-			if(err) {
-				throw new Error(err);
+		this.bot.startRTM((error, bot, payload) => {
+			if (error !== null) {
+				this.emit('error', error);
 			}
 		});
 	}
@@ -37,6 +39,11 @@ export class MoochBot extends events.EventEmitter {
 
 		this.controller.on('rtm_close', (bot) => {
 			this.emit('disconnected');
+		});
+
+		this.controller.hears('hello', toMe, (bot, message) => {
+			this.emit('received', message);
+			bot.reply(message, 'Hello there');
 		});
 	}
 

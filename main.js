@@ -44,3 +44,11 @@ MoochBot.on('connected', (message) => {
 MoochBot.on('disconnected', (message) => {
 	mainWindow.webContents.send('slack:disconnected');
 });
+
+MoochBot.on('error', (error) => {
+	mainWindow.webContents.send('slack:error', error);
+});
+
+MoochBot.on('received', (message) => {
+	mainWindow.webContents.send('slack:received', message);
+})
