@@ -8,20 +8,22 @@ import Botkit = require('botkit');
 const toMe = ['direct_message', 'direct_mention', 'mention'];
 
 export class MoochBot extends events.EventEmitter {
-	config: any;
-	controller: any;
 	bot: any;
+	controller: any;
 	connected: boolean = false;
+	token: string;
 
-	constructor(config: any) {
+
+	constructor(token: string) {
 		super();
 
-		this.config = config;
+		this.token = token;
 		this.setupController();
 		this.setupBot();
 	}
 
 	connect() {
+		this.emit('connecting');
 		this.bot.startRTM((error, bot, payload) => {
 			if (error !== null) {
 				this.emit('error', error);
@@ -61,7 +63,7 @@ export class MoochBot extends events.EventEmitter {
 
 	private setupBot() {
 		this.bot = this.controller.spawn({
-			token: this.config.slack.token
+			token: this.token
 		});
 	}
 }

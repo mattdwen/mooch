@@ -4,9 +4,12 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const ipcMain = electron.ipcMain;
 
-const config = require('./conf/config.secret');
+//const config = require('./conf/config.secret');
+const config = require('./lib/config');
+const Config = new config.Config(app);
+
 const moochBot = require('./lib/moochBot');
-const MoochBot = new moochBot.MoochBot(config);
+var MoochBot;
 
 let mainWindow;
 
@@ -18,6 +21,9 @@ function createWindow() {
 		mainWindow = null;
 	});
 }
+
+// app
+// -----------------------------------------------------------------------------
 
 app.on('ready', createWindow);
 
@@ -33,22 +39,55 @@ app.on('window-all-closed', function() {
 	}
 });
 
-ipcMain.on('slack:connect', () => {
-		MoochBot.reconnect();
+
+
+// options
+// -----------------------------------------------------------------------------
+
+ipcMain.on('options:load', () => {
+	mainWindow.webContents.send('options:loaded', Config.options);
 });
 
-MoochBot.on('connected', (message) => {
-	mainWindow.webContents.send('slack:connected');
+ipcMain.on('options:save', (sender, options) => {
+	Config.options = options;
+	Config.save();
 });
 
-MoochBot.on('disconnected', (message) => {
+Config.on('saved', () => {
+	mainWindow.webContents.send('options:saved');
 	mainWindow.webContents.send('slack:disconnected');
-});
-
-MoochBot.on('error', (error) => {
-	mainWindow.webContents.send('slack:error', error);
-});
-
-MoochBot.on('received', (message) => {
-	mainWindow.webContents.send('slack:received', message);
+	connectMoochBot();
 })
+
+
+
+// moochbot / slack
+// -----------------------------------------------------------------------------
+
+function connectMoochBot() {
+	MoochBot = new moochBot.MoochBot(Config.options.slack.token);
+
+	MoochBot.on('connecting', (message) => {
+		mainWindow.webContents.send('slack:connecting');
+	});
+
+	MoochBot.on('connected', (message) => {
+		mainWindow.webContents.send('slack:connected');
+	});
+
+	MoochBot.on('disconnected', (message) => {
+		mainWindow.webContents.send('slack:disconnected');
+	});
+
+	MoochBot.on('error', (error) => {
+		mainWindow.webContents.send('slack:error', error);
+	});
+
+	MoochBot.on('received', (message) => {
+		mainWindow.webContents.send('slack:received', message);
+	});
+
+	MoochBot.reconnect();
+}
+
+ipcMain.on('slack:connect', connectMoochBot);

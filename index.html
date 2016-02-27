@@ -18,6 +18,7 @@
 
 	<div class="container-fluid">
 		<div class="row">
+
 			<div class="col-md-6">
 				<div class="card">
 					<div class="card-block">
@@ -33,6 +34,23 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-block">
+						<h1 class="card-title">Options</h1>
+
+						<form id="optionsForm">
+							<div class="form-group">
+								<label for="optionsSlackToken">Slack token</label>
+								<input type="text" class="form-control" id="optionsSlackToken" required/>
+							</div>
+
+							<button class="btn btn-primary" type="submit">Save</button>
+						</form>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -42,6 +60,7 @@
 	<script src="bower_components/tether/dist/js/tether.js"></script>
 	<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 	<script src="js/main.js"></script>
+	<script src="js/options.js"></script>
 	<script src="js/slack.js"></script>
 </body>
 </html>

@@ -1,19 +1,11 @@
 $(function() {
 	$('#slackConnect').click(() => {
 		ipcRenderer.send('slack:connect');
-		$('#slackConnect').addClass('hidden-xs-up');
-		$('#slackConnecting').removeClass('hidden-xs-up');
 	}).trigger('click');
 
-	ipcRenderer.on('slack:connected', () => {
-		$('#slackConnecting').addClass('hidden-xs-up');
-		$('#slackDisconnect').removeClass('hidden-xs-up');
-	});
-
-	ipcRenderer.on('slack:disconnected', () => {
-		$('#slackDisconnect').addClass('hidden-xs-up');
-		$('#slackConnect').removeClass('hidden-xs-up');
-	});
+	ipcRenderer.on('slack:connecting', connecting);
+	ipcRenderer.on('slack:connected', connected);
+	ipcRenderer.on('slack:disconnected', disconnected);
 
 	ipcRenderer.on('slack:error', (sender, error) => {
 		console.log(error);
@@ -28,5 +20,23 @@ $(function() {
 		$('#slackMessage')
 			.attr('class', 'text-' + style)
 			.text(message);
+	}
+
+	function connecting() {
+		$('#slackConnect').addClass('hidden-xs-up');
+		$('#slackConnecting').removeClass('hidden-xs-up');
+		$('#slackDisconnect').addClass('hidden-xs-up');
+	}
+
+	function connected() {
+		$('#slackConnect').addClass('hidden-xs-up');
+		$('#slackConnecting').addClass('hidden-xs-up');
+		$('#slackDisconnect').removeClass('hidden-xs-up');
+	}
+
+	function disconnected() {
+		$('#slackConnect').removeClass('hidden-xs-up');
+		$('#slackConnecting').addClass('hidden-xs-up');
+		$('#slackDisconnect').addClass('hidden-xs-up');
 	}
 });
