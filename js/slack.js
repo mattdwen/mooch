@@ -8,12 +8,11 @@ $(function() {
 	ipcRenderer.on('slack:disconnected', disconnected);
 
 	ipcRenderer.on('slack:error', (sender, error) => {
-		console.log(error);
+		console.error(error);
 		showMessage(error.code, 'danger');
 	});
 
 	ipcRenderer.on('slack:received', (sender, message) => {
-		console.log(message);
 		showMessage(message, 'muted');
 	});
 

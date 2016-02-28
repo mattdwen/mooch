@@ -67,6 +67,34 @@
 		</div>
 	</div>
 
+	<!-- Calendar sign in modal -->
+	<div class="modal fade" id="modalCalendarAuth">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	        <h4 class="modal-title">Google Calendar</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p>We need to authorise your Google Calendar access.</p>
+					<p>Click the button below, follow the steps, then paste the generated code back here.</p>
+
+					<a class="btn btn-primary" id="calendarAuthStartButton" href="" target="_blank">Authorise Google Calendar</a>
+
+					<form id="calendarAuthEntry">
+						<div class="form-group">
+							<input type="text" class="form-control" id="calendarAuthCode" placeholder="code" required/>
+						</div>
+
+						<button type="submit" class="btn btn-primary" id="calendarAuthSubmit">Save</button>
+					</form>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
 	<script>
 		window.$ = window.jQuery = require('./bower_components/jquery/dist/jquery.js');
 	</script>

@@ -27,5 +27,22 @@ $(function() {
 		console.log('saved');
 	});
 
+	ipcRenderer.on('calendar:needsAuth', (sender, authUrl) => {
+		$('#calendarAuthStartButton').show();
+		$('#calendarAuthEntry').hide();
+		$('#calendarAuthStartButton').attr('href', authUrl);
+		$('#modalCalendarAuth').modal();
+	});
+
 	ipcRenderer.send('options:load');
+
+	$('#calendarAuthStartButton').click(() => {
+		$('#calendarAuthStartButton').hide();
+		$('#calendarAuthEntry').show();
+	});
+
+	$('#calendarAuthEntry').submit(() => {
+		var code = $('#calendarAuthCode').val();
+		ipcRenderer.send('calendar:auth', code);
+	});
 });

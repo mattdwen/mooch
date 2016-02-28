@@ -1,7 +1,5 @@
 ///<reference path="../typings/node/node.d.ts" />
 
-//declare var extend:any;
-
 import events = require('events');
 import fs = require('fs');
 import path = require('path');

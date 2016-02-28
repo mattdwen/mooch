@@ -11,6 +11,9 @@ const Config = new config.Config(app);
 const moochBot = require('./lib/moochBot');
 var MoochBot;
 
+const CalendarModule = require('./lib/calendar');
+var Calendar;
+
 let mainWindow;
 
 function createWindow() {
@@ -46,6 +49,7 @@ app.on('window-all-closed', function() {
 
 ipcMain.on('options:load', () => {
 	mainWindow.webContents.send('options:loaded', Config.options);
+	setupCalendar();
 });
 
 ipcMain.on('options:save', (sender, options) => {
@@ -91,3 +95,21 @@ function connectMoochBot() {
 }
 
 ipcMain.on('slack:connect', connectMoochBot);
+
+
+
+// calendar
+// -----------------------------------------------------------------------------
+function setupCalendar() {
+	Calendar = new CalendarModule.Calendar(Config.options);
+
+	Calendar.on('needstoken', (authUrl) => {
+		mainWindow.webContents.send('calendar:needsAuth', authUrl);
+	});
+
+	Calendar.checkAuthorisation();
+}
+
+ipcMain.on('calendar:auth', (event, code) => {
+	Calendar.authorise(code);
+});

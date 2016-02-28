@@ -99,7 +99,7 @@ export class MoochBot extends events.EventEmitter {
 
 	private logMessage(message) {
 		this.getUserNameById(message.user, (name) => {
-			this.emit('received', name + 'said : ' +  message.text);
+			this.emit('received', name + ' said : ' +  message.text);
 		});
 	}
 }
