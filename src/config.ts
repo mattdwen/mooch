@@ -1,13 +1,14 @@
-///<reference path="../typings/node/node.d.ts" />
+///<reference path="../typings/tsd.d.ts"/>
 
 import events = require('events');
 import fs = require('fs');
 import path = require('path');
-import extend = require('xtend');
+
+var extend = require('xtend');
 
 export class Config extends events.EventEmitter {
-	app:any;
-	configPath:string;
+	app: Electron.App;
+	configPath: string;
 	defaultOptions = {
 		google: {
 			calendar: {
@@ -22,7 +23,7 @@ export class Config extends events.EventEmitter {
 
 	options = this.defaultOptions;
 
-	constructor(app: any) {
+	constructor(app: Electron.App) {
 		super();
 
 		this.app = app;

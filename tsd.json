@@ -6,12 +6,15 @@
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "node/node.d.ts": {
-      "commit": "27d7b56688bfeba9c6fc1ce0ecb611d929982d44"
+      "commit": "47b0d11d4f5af984c821dd406bedd943b2b48753"
     },
     "moment/moment.d.ts": {
       "commit": "47b0d11d4f5af984c821dd406bedd943b2b48753"
     },
     "moment/moment-node.d.ts": {
+      "commit": "47b0d11d4f5af984c821dd406bedd943b2b48753"
+    },
+    "github-electron/github-electron.d.ts": {
       "commit": "47b0d11d4f5af984c821dd406bedd943b2b48753"
     }
   }

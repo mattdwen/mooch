@@ -9,6 +9,7 @@
 		"module": "commonjs"
 	},
 	"filesGlob": [
+		"./src/config.ts",
 		"./src/**/*.ts"
 	],
 	"exlude": [
