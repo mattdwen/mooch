@@ -3,6 +3,7 @@
 //declare var Botkit: any;
 
 import events = require('events');
+import DateTimeTools = require('./dateTimeTools');
 import CalendarModule = require('./calendar');
 
 var Botkit = require('botkit');
@@ -72,6 +73,8 @@ export class MoochBot extends events.EventEmitter {
 			json_file_store: this.dataPath + '/data'
 		});
 
+		// Connection
+		//
 		this.controller.on('rtm_open', (bot) => {
 			this.connected = true;
 			this.emit('connected');
@@ -83,12 +86,20 @@ export class MoochBot extends events.EventEmitter {
 			this.reconnect();
 		});
 
-		this.controller.hears(['hello', 'hi'], toMe, (bot, message) => {
-			this.sayHello(bot, message);
-		});
-
+		// Calendar
+		//
 		this.controller.hears('coming up', 'direct_message,direct_mention,mention', (bot, message) => {
 			this.whatsComingUp(bot, message);
+		});
+
+		this.controller.hears('staying (.*) weekend', toMe, (bot, message) => {
+			this.whosStaying(bot, message);
+		});
+
+		// Misc
+		//
+		this.controller.hears(['hello', 'hi'], toMe, (bot, message) => {
+			this.sayHello(bot, message);
 		});
 	}
 
@@ -96,6 +107,35 @@ export class MoochBot extends events.EventEmitter {
 		this.calendar.listEvents('', (events) => {
 			if (events.length === 0) {
 				bot.reply(message, "There's nothing in the next month.");
+			} else {
+				for (var i = 0; i < events.length; i++) {
+					bot.reply(message, events[i].txt)
+				}
+			}
+		});
+
+		this.logMessage(message);
+	}
+
+	whosStaying(bot, message) {
+		var weekend;
+		var match = message.match[1]
+		switch (match) {
+			case 'this':
+				weekend = DateTimeTools.thisWeekend();
+				break;
+			case 'next':
+				weekend = DateTimeTools.nextWeekend();
+				break;
+
+			default:
+				bot.reply(message, "I'm not sure what weekend you're talking about.");
+				return;
+		}
+
+		this.calendar.queryEvents('staying', weekend.starts, weekend.ends, function(events) {
+			if (events.length === 0) {
+				bot.reply(message, "There's no one staying " + match  + " weekend.");
 			} else {
 				for (var i = 0; i < events.length; i++) {
 					bot.reply(message, events[i].txt)

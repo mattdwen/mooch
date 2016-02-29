@@ -92,6 +92,26 @@ export class Calendar extends events.EventEmitter {
 		});
 	}
 
+	queryEvents(query:string, startDate:moment.Moment, endDate:moment.Moment, callback) {
+		this.calendar.cal.events.list({
+			auth: this.calendar.auth,
+			calendarId: 'primary',
+			q: query,
+			timeMin: startDate.format(),
+			timeMax: endDate.format(),
+			singleEvents: true,
+			orderBy: 'startTime'
+		}, (err, response) => {
+			if (err) {
+				this.emit('error', err);
+				return;
+			}
+
+			var events = response.items.map(this.humanize);
+			callback(events);
+		});
+	};
+
 	private humanize(event) {
 		var txt = 'human text';
 		var start = moment(event.start.dateTime || event.start.date);

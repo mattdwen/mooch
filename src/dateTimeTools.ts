@@ -25,3 +25,29 @@ export function humanizeDateTime(dateTime: string): string {
 		return m.format(dateFormat + ' [at] ' + timeFormat);
 	}
 }
+
+export function thisWeekend() {
+	var friday = moment().day('Friday');
+	var monday = moment(friday).add(3, 'days');
+
+	friday = moment(friday.format('YYYY-MM-DDT18:00:00'));
+	monday = moment(monday.format('YYYY-MM-DDT06:00:00'));
+
+	return {
+		starts: friday,
+		ends: monday
+	};
+}
+
+export function nextWeekend() {
+	var friday = moment().day('Friday').add(7, 'days');
+	var monday = moment(friday).add(3, 'days');
+
+	friday = moment(friday.format('YYYY-MM-DDT18:00:00'));
+	monday = moment(monday.format('YYYY-MM-DDT06:00:00'));
+
+	return {
+		starts: friday,
+		ends: monday
+	};
+}
