@@ -69,7 +69,11 @@ Config.on('saved', () => {
 // -----------------------------------------------------------------------------
 
 function connectMoochBot() {
-	MoochBot = new moochBot.MoochBot(Config.options.slack.token, app.getPath('userData'));
+	if (Calendar == null) {
+		setupCalendar();
+	}
+	
+	MoochBot = new moochBot.MoochBot(Config.options.slack.token, app.getPath('userData'), Calendar);
 
 	MoochBot.on('connecting', (message) => {
 		mainWindow.webContents.send('slack:connecting');

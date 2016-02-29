@@ -3,12 +3,15 @@
 //declare var Botkit: any;
 
 import events = require('events');
-import Botkit = require('botkit');
+import CalendarModule = require('./calendar');
+
+var Botkit = require('botkit');
 
 const toMe = ['direct_message', 'direct_mention', 'mention'];
 
 export class MoochBot extends events.EventEmitter {
 	bot: any;
+	calendar: CalendarModule.Calendar;
 	controller: any;
 	connected: boolean = false;
 	dataPath: string;
@@ -16,16 +19,17 @@ export class MoochBot extends events.EventEmitter {
 
 	public getUserByIdCallback:(user:any) => void;
 
-	constructor(token: string, dataPath: string) {
+	constructor(token: string, dataPath: string, calendar: CalendarModule.Calendar) {
 		super();
 
 		this.token = token;
 		this.dataPath = dataPath;
+		this.calendar = calendar;
 		this.setupController();
 		this.setupBot();
 	}
 
-	public connect() {
+	connect() {
 		this.emit('connecting');
 		this.bot.startRTM((error, bot, payload) => {
 			if (error !== null) {
@@ -34,7 +38,7 @@ export class MoochBot extends events.EventEmitter {
 		});
 	}
 
-	public reconnect() {
+	reconnect() {
 		if (this.connected) return;
 		this.connect();
 		setTimeout(() => {
@@ -42,7 +46,7 @@ export class MoochBot extends events.EventEmitter {
 		}, 30 * 1000);
 	}
 
-	public getUserById(id: string, callback) {
+	getUserById(id: string, callback) {
 		this.controller.storage.users.get(id, (err, user) => {
 			if (user) {
 				callback(user);
@@ -57,13 +61,13 @@ export class MoochBot extends events.EventEmitter {
 		});
 	}
 
-	public getUserNameById(id: string, callback) {
+	getUserNameById(id: string, callback) {
 		this.getUserById(id, (user) => {
 			callback(user.name);
 		});
 	}
 
-	private setupController() {
+	setupController() {
 		this.controller = Botkit.slackbot({
 			json_file_store: this.dataPath + '/data'
 		});
@@ -82,22 +86,40 @@ export class MoochBot extends events.EventEmitter {
 		this.controller.hears(['hello', 'hi'], toMe, (bot, message) => {
 			this.sayHello(bot, message);
 		});
+
+		this.controller.hears('coming up', 'direct_message,direct_mention,mention', (bot, message) => {
+			this.whatsComingUp(bot, message);
+		});
 	}
 
-	private sayHello(bot, message) {
+	whatsComingUp(bot, message) {
+		this.calendar.listEvents('', (events) => {
+			if (events.length === 0) {
+				bot.reply(message, "There's nothing in the next month.");
+			} else {
+				for (var i = 0; i < events.length; i++) {
+					bot.reply(message, events[i].txt)
+				}
+			}
+		});
+
+		this.logMessage(message);
+	}
+
+	sayHello(bot, message) {
 		this.getUserNameById(message.user, (name) => {
 			bot.reply(message, 'Hello there ' + name);
 			this.logMessage(message);
 		});
 	}
 
-	private setupBot() {
+	setupBot() {
 		this.bot = this.controller.spawn({
 			token: this.token
 		});
 	}
 
-	private logMessage(message) {
+	logMessage(message) {
 		this.getUserNameById(message.user, (name) => {
 			this.emit('received', name + ' said : ' +  message.text);
 		});

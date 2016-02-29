@@ -1,10 +1,13 @@
-import ConfigModule = require('./Config');
 import events = require('events');
+
+import ConfigModule = require('./Config');
+import dtt = require('./dateTimeTools');
 
 var app = require('electron').app;
 var fs = require('fs');
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
+var moment = require('moment');
 
 export class Calendar extends events.EventEmitter {
 	options: any;
@@ -67,5 +70,45 @@ export class Calendar extends events.EventEmitter {
 		}
 
 		fs.writeFile(this.tokenPath, JSON.stringify(token));
+	}
+
+	listEvents(query:string, callback) {
+		this.calendar.cal.events.list({
+			auth: this.calendar.auth,
+			calendarId: 'primary',
+			q: query,
+			timeMin: (new Date()).toISOString(),
+			singleEvents: true,
+			maxResults: 10,
+			orderBy: 'startTime'
+		}, (err, response) => {
+			if (err) {
+				this.emit('error', err);
+				return;
+			}
+
+			var events = response.items.map(this.humanize);
+			callback(events);
+		});
+	}
+
+	private humanize(event) {
+		var txt = 'human text';
+		var start = moment(event.start.dateTime || event.start.date);
+		var end = moment(event.end.dateTime || event.end.date);
+		var daysDuration = end.diff(start, 'days');
+
+		event.txt = dtt.humanizeDateTime(start);
+		event.txt += ', ' + event.summary;
+
+		if (daysDuration > 0) {
+			event.txt += ' for ' + daysDuration + ' days';
+		}
+
+		if (event.location) {
+			event.txt += ' at ' + event.location;
+		}
+
+		return event;
 	}
 }
