@@ -5,6 +5,7 @@ import DateTimeTools = require('./dateTimeTools');
 import CalendarModule = require('./calendar');
 
 var Botkit = require('botkit');
+var _ = require('lodash');
 
 const toMe = ['direct_message', 'direct_mention', 'mention'];
 
@@ -16,10 +17,16 @@ export class MoochBot extends events.EventEmitter {
 	dataPath: string;
 	token: string;
 
+	temperature: any = {};
+
+	humidity: any = {};
+
 	public getUserByIdCallback:(user:any) => void;
 
 	constructor(token: string, dataPath: string, calendar: CalendarModule.Calendar) {
 		super();
+
+		console.log('NEW BOT');
 
 		this.token = token;
 		this.dataPath = dataPath;
@@ -99,6 +106,11 @@ export class MoochBot extends events.EventEmitter {
 		this.controller.hears(['hello', 'hi'], toMe, (bot, message) => {
 			this.sayHello(bot, message);
 		});
+
+		// Temperature
+		this.controller.hears('temperature', toMe, (bot, message) => {
+			this.currentTemperature(bot, message);
+		});
 	}
 
 	whatsComingUp(bot, message) {
@@ -161,5 +173,21 @@ export class MoochBot extends events.EventEmitter {
 		this.getUserNameById(message.user, (name) => {
 			this.emit('received', name + ' said : ' +  message.text);
 		});
+	}
+
+
+
+	// Temperature
+	// ==========================================================================
+
+	currentTemperature(bot, message) {
+		_.forEach(this.temperature, (temp, location) => {
+			bot.reply(message, "It's " + temp + '° in the ' + location + '.');
+		});
+	}
+
+	recordTemperature(location, temperature, humidity) {
+		this.temperature[location] = temperature;
+		this.humidity[location] = humidity;
 	}
 }

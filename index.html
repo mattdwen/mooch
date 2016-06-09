@@ -62,6 +62,32 @@
 						<p id="slackMessage"></p>
 					</div>
 				</div>
+
+				<div class="card">
+					<div class="card-block">
+						<h4 class="card-title">
+							Temperature
+							<button class="btn btn-secondary pull-right" id="refreshTemperatures" type="button">
+								<i class="fa fa-refresh"></i>
+							</button>
+						</h4>
+
+						<div class="row">
+							<div class="col-xs-6">
+								<div class="display-1">
+									<span id="temp-ceiling">0</span>&deg;
+								</div>
+								<div class="text-muted">Ceiling</div>
+							</div>
+							<div class="col-xs-6">
+								<div class="display-1">
+									<span id="temp-kitchen">0</span>&deg;
+								</div>
+								<div class="text-muted">Kitchen</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 
 		</div>
@@ -103,5 +129,6 @@
 	<script src="js/main.js"></script>
 	<script src="js/options.js"></script>
 	<script src="js/slack.js"></script>
+	<script src="js/temperature.js"></script>
 </body>
 </html>

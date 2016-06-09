@@ -72,7 +72,7 @@ function connectMoochBot() {
 	if (Calendar == null) {
 		setupCalendar();
 	}
-	
+
 	MoochBot = new moochBot.MoochBot(Config.options.slack.token, app.getPath('userData'), Calendar);
 
 	MoochBot.on('connecting', (message) => {
@@ -99,6 +99,11 @@ function connectMoochBot() {
 }
 
 ipcMain.on('slack:connect', connectMoochBot);
+
+ipcMain.on('temperature', (e, location, temperature, humidity) => {
+	if (MoochBot === null) return;
+	MoochBot.recordTemperature(location, temperature, humidity);
+});
 
 
 
