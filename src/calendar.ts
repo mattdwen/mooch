@@ -1,3 +1,5 @@
+///<reference path="../typings/tsd.d.ts"/>
+
 import events = require('events');
 
 import ConfigModule = require('./Config');

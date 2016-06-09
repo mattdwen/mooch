@@ -15,14 +15,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
 	},
-	"filesGlob": [
-		"./src/**/*.ts",
-		"./typings/**/*.d.ts"
-	],
 	"exlude": [
-		"node_modules"
-	],
-	"atom": {
-		"rewriteTsconfig": false
-	}
+		"bower_components",
+		"node_modules",
+	]
 }

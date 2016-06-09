@@ -1,6 +1,4 @@
-///<reference path="../typings/node/node.d.ts" />
-
-//declare var Botkit: any;
+///<reference path="../typings/tsd.d.ts" />
 
 import events = require('events');
 import DateTimeTools = require('./dateTimeTools');
