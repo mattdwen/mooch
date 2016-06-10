@@ -1,7 +1,7 @@
-*.secret.js
+*.log
+
 bower_components/
-conf/tokens/
-data/
+dist/
 lib/
 node_modules/
 typings/
