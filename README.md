@@ -17,9 +17,6 @@ npm start
 Package
 -------
 
-```
-gulp build
-electron-packager . --platform=win32 --arch=x64 --out=dist --app-version=$npm_package_version --prune --asar --overwrite
-```
+From PowerShell `.\build\package.ps1`.
 
 Copyright (c) 2016 Matt Dwen
