@@ -4,12 +4,11 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const ipcMain = electron.ipcMain;
 
-//const config = require('./conf/config.secret');
 const config = require('./lib/config');
 const Config = new config.Config(app);
 
 const moochBot = require('./lib/moochBot');
-var MoochBot;
+var MoochBot = null;
 
 const CalendarModule = require('./lib/calendar');
 var Calendar;
@@ -73,27 +72,29 @@ function connectMoochBot() {
 		setupCalendar();
 	}
 
-	MoochBot = new moochBot.MoochBot(Config.options.slack.token, app.getPath('userData'), Calendar);
+	if (MoochBot === null) {
+		MoochBot = new moochBot.MoochBot(Config.options.slack.token, app.getPath('userData'), Calendar);
 
-	MoochBot.on('connecting', (message) => {
-		mainWindow.webContents.send('slack:connecting');
-	});
+		MoochBot.on('connecting', (message) => {
+			mainWindow.webContents.send('slack:connecting');
+		});
 
-	MoochBot.on('connected', (message) => {
-		mainWindow.webContents.send('slack:connected');
-	});
+		MoochBot.on('connected', (message) => {
+			mainWindow.webContents.send('slack:connected');
+		});
 
-	MoochBot.on('disconnected', (message) => {
-		mainWindow.webContents.send('slack:disconnected');
-	});
+		MoochBot.on('disconnected', (message) => {
+			mainWindow.webContents.send('slack:disconnected');
+		});
 
-	MoochBot.on('error', (error) => {
-		mainWindow.webContents.send('slack:error', error);
-	});
+		MoochBot.on('error', (error) => {
+			mainWindow.webContents.send('slack:error', error);
+		});
 
-	MoochBot.on('received', (message) => {
-		mainWindow.webContents.send('slack:received', message);
-	});
+		MoochBot.on('received', (message) => {
+			mainWindow.webContents.send('slack:received', message);
+		});
+	}
 
 	MoochBot.reconnect();
 }
