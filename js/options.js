@@ -1,4 +1,14 @@
 $(function() {
+	$('#optionsSecuritySnapshotPathBrowse').click(() => {
+		var dir = dialog.showOpenDialog({
+			properties: ['openDirectory']
+		});
+
+		if (dir === undefined) return;
+
+		$('#optionsSecuritySnapshotPath').val(dir);
+	});
+
 	$('#optionsForm').submit((e) => {
 		e.preventDefault();
 
@@ -7,6 +17,11 @@ $(function() {
 				calendar: {
 					clientId: $('#optionsGoogleCalendarClientId').val(),
 					clientSecret: $('#optionsGoogleCalendarClientSecret').val()
+				}
+			},
+			security: {
+				snapshots: {
+					path: $('#optionsSecuritySnapshotPath').val()
 				}
 			},
 			slack: {
@@ -21,6 +36,7 @@ $(function() {
 		$('#optionsSlackToken').val(options.slack.token);
 		$('#optionsGoogleCalendarClientId').val(options.google.calendar.clientId);
 		$('#optionsGoogleCalendarClientSecret').val(options.google.calendar.clientSecret);
+		$('#optionsSecuritySnapshotPath').val(options.security.snapshots.path);
 	});
 
 	ipcRenderer.on('options:saved', () => {

@@ -16,6 +16,11 @@ export class Config extends events.EventEmitter {
 				clientSecret: ''
 			}
 		},
+		security: {
+			snapshots: {
+				path: ''
+			}
+		},
 		slack: {
 			token: ''
 		}

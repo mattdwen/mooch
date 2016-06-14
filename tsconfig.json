@@ -8,15 +8,28 @@
 		"target": "es5",
 		"module": "commonjs",
 		"declaration": false,
-    "noImplicitAny": false,
-    "noResolve": true,
-    "removeComments": true,
-    "noLib": false,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+		"noImplicitAny": false,
+		"noResolve": true,
+		"removeComments": true,
+		"noLib": false,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true
 	},
 	"exlude": [
 		"bower_components",
 		"node_modules"
-	]
+	],
+	"filesGlob": [
+		"./src/**/*.ts"
+	],
+	"files": [
+		"./src/calendar.ts",
+		"./src/config.ts",
+		"./src/dateTimeTools.ts",
+		"./src/moochBot.ts",
+		"./src/users.ts"
+	],
+	"atom": {
+		"rewriteTsconfig": true
+	}
 }
