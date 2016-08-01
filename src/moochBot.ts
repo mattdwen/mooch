@@ -23,6 +23,9 @@ export class MoochBot extends events.EventEmitter {
 
 	public getUserByIdCallback:(user:any) => void;
 
+	// Constructor
+	// ---------------------------------------------------------------------------
+
 	constructor(token: string, dataPath: string, calendar: CalendarModule.Calendar) {
 		super();
 
@@ -35,43 +38,10 @@ export class MoochBot extends events.EventEmitter {
 		this.setupBot();
 	}
 
-	connect() {
-		this.emit('connecting');
-		this.bot.startRTM((error, bot, payload) => {
-			if (error !== null) {
-				this.emit('error', error);
-			}
-		});
-	}
 
-	reconnect() {
-		if (this.connected) return;
-		this.connect();
-		setTimeout(() => {
-			this.reconnect();
-		}, 30 * 1000);
-	}
 
-	getUserById(id: string, callback) {
-		this.controller.storage.users.get(id, (err, user) => {
-			if (user) {
-				callback(user);
-				return;
-			}
-
-			this.bot.api.users.info({user: id}, (err, response) => {
-				this.controller.storage.users.save(response.user);
-				callback(response.user);
-				return;
-			});
-		});
-	}
-
-	getUserNameById(id: string, callback) {
-		this.getUserById(id, (user) => {
-			callback(user.name);
-		});
-	}
+	// Controller
+	// ---------------------------------------------------------------------------
 
 	setupController() {
 		this.controller = Botkit.slackbot({
@@ -108,10 +78,76 @@ export class MoochBot extends events.EventEmitter {
 		});
 
 		// Temperature
+		//
 		this.controller.hears('temperature', toMe, (bot, message) => {
 			this.currentTemperature(bot, message);
 		});
 	}
+
+
+
+	// Bot
+	// ---------------------------------------------------------------------------
+
+	setupBot() {
+		this.bot = this.controller.spawn({
+			token: this.token,
+			retry: Infinity
+		});
+	}
+
+
+
+
+	// Connection
+	// ---------------------------------------------------------------------------
+
+	connect() {
+		this.emit('connecting');
+		this.bot.startRTM((error, bot, payload) => {
+			if (error !== null) {
+				this.emit('error', error);
+			}
+		});
+	}
+
+	reconnect() {
+		if (this.connected) return;
+		this.connect();
+		setTimeout(() => {
+			this.reconnect();
+		}, 30 * 1000);
+	}
+
+
+
+	// User handling
+	// ---------------------------------------------------------------------------
+
+	getUserById(id: string, callback) {
+		this.controller.storage.users.get(id, (err, user) => {
+			if (user) {
+				callback(user);
+				return;
+			}
+
+			this.bot.api.users.info({user: id}, (err, response) => {
+				this.controller.storage.users.save(response.user);
+				callback(response.user);
+				return;
+			});
+		});
+	}
+
+	getUserNameById(id: string, callback) {
+		this.getUserById(id, (user) => {
+			callback(user.name);
+		});
+	}
+
+
+	// Calendar functions
+	// ---------------------------------------------------------------------------
 
 	whatsComingUp(bot, message) {
 		this.calendar.listEvents('', (events) => {
@@ -163,12 +199,6 @@ export class MoochBot extends events.EventEmitter {
 		});
 	}
 
-	setupBot() {
-		this.bot = this.controller.spawn({
-			token: this.token
-		});
-	}
-
 	logMessage(message) {
 		this.getUserNameById(message.user, (name) => {
 			this.emit('received', name + ' said : ' +  message.text);
@@ -178,7 +208,7 @@ export class MoochBot extends events.EventEmitter {
 
 
 	// Temperature
-	// ==========================================================================
+	// ---------------------------------------------------------------------------
 
 	currentTemperature(bot, message) {
 		_.forEach(this.temperature, (temp, location) => {
