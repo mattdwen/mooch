@@ -16,11 +16,7 @@ namespace mooch.client
       var slack = Slack.Instance;
       slack.SlackMessageRecieved += Slack_SlackMessageRecieved;
 
-
-      var grabWatcher = new ImageWatcher(ConfigurationManager.AppSettings["security.grabs.path"], "*.jpg");
-      grabWatcher.ImageCaptured += () => { LogManager.GetCurrentClassLogger().Info("Snapshot grabbed"); };
-
-      var thumbnailWatcher = new ImageWatcher(ConfigurationManager.AppSettings["security.thumbs.path"], "*_large.jpg");
+      var thumbnailWatcher = new ImageWatcher(ConfigurationManager.AppSettings["security.thumbs.path"], "*_full.jpg");
       thumbnailWatcher.ImageCaptured += () => { LogManager.GetCurrentClassLogger().Info("Motion detected"); };
 
       Console.ReadKey();
@@ -34,10 +30,6 @@ namespace mooch.client
         case "hello":
           var userName = Slack.Instance.GetUserName(message.user);
           Slack.Instance.PostMessage(message.channel, $"Hello @{userName}!");
-          break;
-
-        case "snapshot":
-          ISpy.Snapshot();
           break;
 
         default:

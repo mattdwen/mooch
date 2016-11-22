@@ -48,6 +48,8 @@ namespace mooch.client.Services
         Filter = _filter
       };
 
+      _watcher.IncludeSubdirectories = true;
+
       while (!_watcher.EnableRaisingEvents)
       {
         try

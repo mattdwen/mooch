@@ -1,5 +1,11 @@
 .vs/
 bin/
+bower_components/
+dist/
+lib/
+node_modules/
 obj/
 packages/
+typings/
+
 *.secret.config
